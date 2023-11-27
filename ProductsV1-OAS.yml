@@ -1,0 +1,222 @@
+openapi: 3.0.3
+info:
+  title: Products - OpenAPI 3.0
+  description: |-
+    This document defines specifications of apis provided for creating, modifying and deleting products for a Inventory Platform.
+  contact:
+    email: ganeshnmanchi@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080/api
+tags:
+  - name: products
+    description: Product operations
+paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get all products, optionally by size
+      description: Get all products
+      parameters:
+        - name: size
+          in: query
+          description: Size to retrieve
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: Invalid Size supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: No products found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    post:
+      tags:
+        - products
+      summary: Add a new product
+      description: Add a new product
+      requestBody:
+        description: Create a new product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      responses:
+        '201':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleProductResponse'
+        '409':
+          description: Product already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /products/{id}:
+    get:
+      tags:
+        - products
+      summary: Finds Product by Id
+      description: Finds Product by Id
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleProductResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    patch:
+      tags:
+        - products
+      summary: Update product by Id
+      description: Update product by Id
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Product Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - products
+      summary: Delete a single Product
+      description: Delete a single Product
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Request Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Name of the product
+          example: AAPL
+        currentPrice:
+          type: number
+          format: double
+          example: 107.00
+    ProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the product
+          example: AAPL
+        currentPrice:
+          type: number
+          format: double
+          example: 107.00
+    Response:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+          format: int64
+          example: 1
+        message:
+          type: string
+          description: Response Message
+          example: Error Message
+        productsList:
+          type: array
+          description: Product List
+          items:
+            $ref: '#/components/schemas/Product'
+    ApiResponse:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+          format: int64
+          example: 1
+        message:
+          type: string
+          description: Response Message
+          example: Response Message
+    SingleProductResponse:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+          format: int64
+          example: 1
+        message:
+          type: string
+          description: Response Message
+          example: Response Message
+        product:
+          type: object
+          description: Product
+          schema:
+            $ref: '#/components/schemas/Product'
