@@ -18,6 +18,34 @@ Before running this Spring Boot application, ensure you have the following prere
 - Java 17
 - [Docker](https://www.docker.com/)
 - [Maven](https://maven.apache.org/)
+- [Docker-Compose](https://docs.docker.com/compose/install/)
+
+## Running the Application with Docker Compose
+### Clone the Repository:
+
+``git clone <your-repository-url>
+cd <your-repository-directory>``
+
+### Build the Spring Boot Application:
+Build your Spring Boot application using Maven. Replace <your-maven-command> with the appropriate command for your project.
+
+``mvn clean install``
+
+### Run Docker Compose:
+Open a terminal in the project directory where your docker-compose.yml file is located and run the following command:
+
+``docker-compose up --build``
+
+### Access the Spring Boot Application:
+Once the Docker containers are up and running, you can access the Spring Boot application and call the REST endpoints at http://localhost:8080.
+
+### Access MongoDB:
+MongoDB can be accessed at mongodb://localhost:27017. Users can use a MongoDB client or tools like MongoDB Compass to interact with the database.
+
+### Stop and Remove Containers:
+To stop and remove the Docker containers, use the following command in the terminal:
+
+``docker-compose down``
 
 ## About the Service
 
